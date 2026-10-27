@@ -1,0 +1,238 @@
+[
+  {
+    "id": "column.public.ProductVariant.lowStockThreshold",
+    "label": "Add column \"lowStockThreshold\" to \"ProductVariant\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "lowStockThreshold",
+        "table": "ProductVariant"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"lowStockThreshold\" is missing",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "ProductVariant",
+          "lowStockThreshold"
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add column \"lowStockThreshold\"",
+        "sql": "ALTER TABLE \"public\".\"ProductVariant\" ADD COLUMN \"lowStockThreshold\" int4 DEFAULT 5 NOT NULL"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"lowStockThreshold\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "ProductVariant",
+          "lowStockThreshold"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "column.public.ProductVariant.stockQuantity",
+    "label": "Add column \"stockQuantity\" to \"ProductVariant\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "stockQuantity",
+        "table": "ProductVariant"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"stockQuantity\" is missing",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "ProductVariant",
+          "stockQuantity"
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add column \"stockQuantity\"",
+        "sql": "ALTER TABLE \"public\".\"ProductVariant\" ADD COLUMN \"stockQuantity\" int4 DEFAULT 0 NOT NULL"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"stockQuantity\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "ProductVariant",
+          "stockQuantity"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "setDefault.ProductVariant.stockStatus",
+    "label": "Set default on \"ProductVariant\".\"stockStatus\"",
+    "operationClass": "widening",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "stockStatus",
+        "table": "ProductVariant"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"stockStatus\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "ProductVariant",
+          "stockStatus"
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "set default on \"stockStatus\"",
+        "sql": "ALTER TABLE \"public\".\"ProductVariant\" ALTER COLUMN \"stockStatus\" SET DEFAULT 'OUT_OF_STOCK'"
+      }
+    ],
+    "postcheck": []
+  },
+  {
+    "id": "data_migration.normalize-initial-inventory-status",
+    "label": "Data transform: normalize-initial-inventory-status",
+    "operationClass": "data",
+    "target": {
+      "id": "postgres"
+    },
+    "precheck": [
+      {
+        "description": "Check normalize-initial-inventory-status has work to do",
+        "sql": "SELECT EXISTS (SELECT \"id\" AS \"id\" FROM \"public\".\"ProductVariant\" WHERE \"stockStatus\" != $1 LIMIT 1) AS ok",
+        "params": [
+          "OUT_OF_STOCK"
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "Run normalize-initial-inventory-status",
+        "sql": "UPDATE \"public\".\"ProductVariant\" SET \"stockStatus\" = $1, \"updatedAt\" = $2",
+        "params": [
+          "OUT_OF_STOCK",
+          "2026-10-25T08:06:38.882Z"
+        ]
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "Verify normalize-initial-inventory-status resolved all violations",
+        "sql": "SELECT NOT EXISTS (SELECT \"id\" AS \"id\" FROM \"public\".\"ProductVariant\" WHERE \"stockStatus\" != $1 LIMIT 1) AS ok",
+        "params": [
+          "OUT_OF_STOCK"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "checkConstraint.ProductVariant.product_variant_low_stock_threshold_nonnegative_dbee7e8b",
+    "label": "Add check constraint \"product_variant_low_stock_threshold_nonnegative_dbee7e8b\" on \"ProductVariant\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "checkConstraint",
+        "name": "product_variant_low_stock_threshold_nonnegative_dbee7e8b",
+        "table": "ProductVariant"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"product_variant_low_stock_threshold_nonnegative_dbee7e8b\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "product_variant_low_stock_threshold_nonnegative_dbee7e8b",
+          "public",
+          "\"public\".\"ProductVariant\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add check constraint \"product_variant_low_stock_threshold_nonnegative_dbee7e8b\"",
+        "sql": "ALTER TABLE \"public\".\"ProductVariant\" ADD CONSTRAINT \"product_variant_low_stock_threshold_nonnegative_dbee7e8b\" CHECK (\"lowStockThreshold\" >= 0)"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify constraint \"product_variant_low_stock_threshold_nonnegative_dbee7e8b\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "product_variant_low_stock_threshold_nonnegative_dbee7e8b",
+          "public",
+          "\"public\".\"ProductVariant\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "checkConstraint.ProductVariant.product_variant_stock_quantity_nonnegative_63b5ecea",
+    "label": "Add check constraint \"product_variant_stock_quantity_nonnegative_63b5ecea\" on \"ProductVariant\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "checkConstraint",
+        "name": "product_variant_stock_quantity_nonnegative_63b5ecea",
+        "table": "ProductVariant"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"product_variant_stock_quantity_nonnegative_63b5ecea\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "product_variant_stock_quantity_nonnegative_63b5ecea",
+          "public",
+          "\"public\".\"ProductVariant\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add check constraint \"product_variant_stock_quantity_nonnegative_63b5ecea\"",
+        "sql": "ALTER TABLE \"public\".\"ProductVariant\" ADD CONSTRAINT \"product_variant_stock_quantity_nonnegative_63b5ecea\" CHECK (\"stockQuantity\" >= 0)"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify constraint \"product_variant_stock_quantity_nonnegative_63b5ecea\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "product_variant_stock_quantity_nonnegative_63b5ecea",
+          "public",
+          "\"public\".\"ProductVariant\""
+        ]
+      }
+    ]
+  }
+]

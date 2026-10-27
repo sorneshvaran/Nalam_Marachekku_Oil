@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "test": "vitest run",
     "postinstall": "prisma skills sync || exit 0",
     "contract:emit": "prisma contract emit"
   },
@@ -14,8 +15,10 @@
     "@prisma/orm-postgres": "^8.0.0-rc.18",
     "dotenv": "^18.0.8",
     "next": "16.4.2",
+    "next-auth": "^5.0.0-beta.32",
     "react": "19.3.0",
-    "react-dom": "19.3.0"
+    "react-dom": "19.3.0",
+    "zod": "^4.6.7"
   },
   "devDependencies": {
     "@prisma/cli-engine": "^0.7.0",
@@ -27,6 +30,8 @@
     "eslint-config-next": "16.4.2",
     "prisma": "^8.0.0-rc.23",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vite": "^7.3.7",
+    "vitest": "^5.0.5"
   }
 }

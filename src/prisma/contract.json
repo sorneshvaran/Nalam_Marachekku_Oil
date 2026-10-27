@@ -1179,6 +1179,13 @@
                   "kind": "scalar"
                 }
               },
+              "lowStockThreshold": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
               "price": {
                 "nullable": false,
                 "type": {
@@ -1197,6 +1204,13 @@
                 "nullable": false,
                 "type": {
                   "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "stockQuantity": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
                   "kind": "scalar"
                 }
               },
@@ -1300,6 +1314,9 @@
                 "id": {
                   "column": "id"
                 },
+                "lowStockThreshold": {
+                  "column": "lowStockThreshold"
+                },
                 "price": {
                   "column": "price"
                 },
@@ -1308,6 +1325,9 @@
                 },
                 "sku": {
                   "column": "sku"
+                },
+                "stockQuantity": {
+                  "column": "stockQuantity"
                 },
                 "stockStatus": {
                   "column": "stockStatus"
@@ -1350,6 +1370,13 @@
                 }
               },
               "name": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "passwordHash": {
                 "nullable": true,
                 "type": {
                   "codecId": "pg/text@1",
@@ -1438,6 +1465,9 @@
                 },
                 "name": {
                   "column": "name"
+                },
+                "passwordHash": {
+                  "column": "passwordHash"
                 },
                 "role": {
                   "column": "role"
@@ -2273,6 +2303,16 @@
                   "expression": "\"unit\" IN ('ML', 'L', 'G', 'KG')",
                   "name": "ProductVariant_unit_check_e45c3311",
                   "prefix": "ProductVariant_unit_check"
+                },
+                {
+                  "expression": "\"lowStockThreshold\" >= 0",
+                  "name": "product_variant_low_stock_threshold_nonnegative_dbee7e8b",
+                  "prefix": "product_variant_low_stock_threshold_nonnegative"
+                },
+                {
+                  "expression": "\"stockQuantity\" >= 0",
+                  "name": "product_variant_stock_quantity_nonnegative_63b5ecea",
+                  "prefix": "product_variant_stock_quantity_nonnegative"
                 }
               ],
               "columns": {
@@ -2299,6 +2339,15 @@
                   "dataType": "pg/uuid",
                   "nullable": false
                 },
+                "lowStockThreshold": {
+                  "codecId": "pg/int4@1",
+                  "dataType": "pg/int4",
+                  "default": {
+                    "kind": "literal",
+                    "value": 5
+                  },
+                  "nullable": false
+                },
                 "price": {
                   "codecId": "pg/numeric@1",
                   "dataType": "pg/numeric",
@@ -2314,12 +2363,21 @@
                   "dataType": "pg/text",
                   "nullable": false
                 },
+                "stockQuantity": {
+                  "codecId": "pg/int4@1",
+                  "dataType": "pg/int4",
+                  "default": {
+                    "kind": "literal",
+                    "value": 0
+                  },
+                  "nullable": false
+                },
                 "stockStatus": {
                   "codecId": "pg/text@1",
                   "dataType": "pg/text",
                   "default": {
                     "kind": "literal",
-                    "value": "AVAILABLE"
+                    "value": "OUT_OF_STOCK"
                   },
                   "nullable": false,
                   "valueSet": {
@@ -2436,6 +2494,11 @@
                   "dataType": "pg/text",
                   "nullable": true
                 },
+                "passwordHash": {
+                  "codecId": "pg/text@1",
+                  "dataType": "pg/text",
+                  "nullable": true
+                },
                 "role": {
                   "codecId": "pg/text@1",
                   "dataType": "pg/text",
@@ -2528,7 +2591,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "28dd2597e3b4447a47e02aeeac4d74bdcb16c92fe48e7c6a219e5ec8ac1b0f5e"
+    "storageHash": "86b4200dbb335bff9b013fab43e8c3bbd3094c637a423b1008734a7286afea8e"
   },
   "execution": {
     "executionHash": "38ec3bf39fe59d214fe7d4cc40534bf8b1741b28a3d7908c25b1a27e62b9991b",

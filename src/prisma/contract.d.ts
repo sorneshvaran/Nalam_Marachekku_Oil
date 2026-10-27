@@ -18,7 +18,7 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'28dd2597e3b4447a47e02aeeac4d74bdcb16c92fe48e7c6a219e5ec8ac1b0f5e'>;
+  StorageHashBase<'86b4200dbb335bff9b013fab43e8c3bbd3094c637a423b1008734a7286afea8e'>;
 export type ExecutionHash =
   ExecutionHashBase<'38ec3bf39fe59d214fe7d4cc40534bf8b1741b28a3d7908c25b1a27e62b9991b'>;
 export type ProfileHash =
@@ -322,9 +322,11 @@ export type FieldOutputTypes = {
       readonly active: CodecTypes['pg/bool@1']['output'];
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
       readonly id: CodecTypes['pg/uuid@1']['output'];
+      readonly lowStockThreshold: CodecTypes['pg/int4@1']['output'];
       readonly price: CodecTypes['pg/numeric@1']['output'];
       readonly productId: CodecTypes['pg/uuid@1']['output'];
       readonly sku: CodecTypes['pg/text@1']['output'];
+      readonly stockQuantity: CodecTypes['pg/int4@1']['output'];
       readonly stockStatus: 'AVAILABLE' | 'LOW_STOCK' | 'OUT_OF_STOCK';
       readonly unit: 'ML' | 'L' | 'G' | 'KG';
       readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['output'];
@@ -335,6 +337,7 @@ export type FieldOutputTypes = {
       readonly email: CodecTypes['pg/text@1']['output'];
       readonly id: CodecTypes['pg/uuid@1']['output'];
       readonly name: CodecTypes['pg/text@1']['output'] | null;
+      readonly passwordHash: CodecTypes['pg/text@1']['output'] | null;
       readonly role: 'CUSTOMER' | 'ADMIN';
       readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['output'];
     };
@@ -430,9 +433,11 @@ export type FieldInputTypes = {
       readonly active: CodecTypes['pg/bool@1']['input'];
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['input'];
       readonly id: CodecTypes['pg/uuid@1']['input'];
+      readonly lowStockThreshold: CodecTypes['pg/int4@1']['input'];
       readonly price: CodecTypes['pg/numeric@1']['input'];
       readonly productId: CodecTypes['pg/uuid@1']['input'];
       readonly sku: CodecTypes['pg/text@1']['input'];
+      readonly stockQuantity: CodecTypes['pg/int4@1']['input'];
       readonly stockStatus: 'AVAILABLE' | 'LOW_STOCK' | 'OUT_OF_STOCK';
       readonly unit: 'ML' | 'L' | 'G' | 'KG';
       readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['input'];
@@ -443,6 +448,7 @@ export type FieldInputTypes = {
       readonly email: CodecTypes['pg/text@1']['input'];
       readonly id: CodecTypes['pg/uuid@1']['input'];
       readonly name: CodecTypes['pg/text@1']['input'] | null;
+      readonly passwordHash: CodecTypes['pg/text@1']['input'] | null;
       readonly role: 'CUSTOMER' | 'ADMIN';
       readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['input'];
     };
@@ -538,9 +544,11 @@ export type StorageColumnTypes = {
       readonly active: CodecTypes['pg/bool@1']['output'];
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
       readonly id: CodecTypes['pg/uuid@1']['output'];
+      readonly lowStockThreshold: CodecTypes['pg/int4@1']['output'];
       readonly price: CodecTypes['pg/numeric@1']['output'];
       readonly productId: CodecTypes['pg/uuid@1']['output'];
       readonly sku: CodecTypes['pg/text@1']['output'];
+      readonly stockQuantity: CodecTypes['pg/int4@1']['output'];
       readonly stockStatus: 'AVAILABLE' | 'LOW_STOCK' | 'OUT_OF_STOCK';
       readonly unit: 'ML' | 'L' | 'G' | 'KG';
       readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['output'];
@@ -551,6 +559,7 @@ export type StorageColumnTypes = {
       readonly email: CodecTypes['pg/text@1']['output'];
       readonly id: CodecTypes['pg/uuid@1']['output'];
       readonly name: CodecTypes['pg/text@1']['output'] | null;
+      readonly passwordHash: CodecTypes['pg/text@1']['output'] | null;
       readonly role: 'CUSTOMER' | 'ADMIN';
       readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['output'];
     };
@@ -646,9 +655,11 @@ export type StorageColumnInputTypes = {
       readonly active: CodecTypes['pg/bool@1']['input'];
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['input'];
       readonly id: CodecTypes['pg/uuid@1']['input'];
+      readonly lowStockThreshold: CodecTypes['pg/int4@1']['input'];
       readonly price: CodecTypes['pg/numeric@1']['input'];
       readonly productId: CodecTypes['pg/uuid@1']['input'];
       readonly sku: CodecTypes['pg/text@1']['input'];
+      readonly stockQuantity: CodecTypes['pg/int4@1']['input'];
       readonly stockStatus: 'AVAILABLE' | 'LOW_STOCK' | 'OUT_OF_STOCK';
       readonly unit: 'ML' | 'L' | 'G' | 'KG';
       readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['input'];
@@ -659,6 +670,7 @@ export type StorageColumnInputTypes = {
       readonly email: CodecTypes['pg/text@1']['input'];
       readonly id: CodecTypes['pg/uuid@1']['input'];
       readonly name: CodecTypes['pg/text@1']['input'] | null;
+      readonly passwordHash: CodecTypes['pg/text@1']['input'] | null;
       readonly role: 'CUSTOMER' | 'ADMIN';
       readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['input'];
     };
@@ -775,9 +787,11 @@ export namespace Models {
     active: CodecTypes['pg/bool@1']['output'];
     createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
     id: CodecTypes['pg/uuid@1']['output'];
+    lowStockThreshold: CodecTypes['pg/int4@1']['output'];
     price: CodecTypes['pg/numeric@1']['output'];
     productId: CodecTypes['pg/uuid@1']['output'];
     sku: CodecTypes['pg/text@1']['output'];
+    stockQuantity: CodecTypes['pg/int4@1']['output'];
     stockStatus: 'AVAILABLE' | 'LOW_STOCK' | 'OUT_OF_STOCK';
     unit: 'ML' | 'L' | 'G' | 'KG';
     updatedAt: CodecTypes['pg/timestamptz-string@1']['output'];
@@ -792,6 +806,7 @@ export namespace Models {
     email: CodecTypes['pg/text@1']['output'];
     id: CodecTypes['pg/uuid@1']['output'];
     name: CodecTypes['pg/text@1']['output'] | null;
+    passwordHash: CodecTypes['pg/text@1']['output'] | null;
     role: 'CUSTOMER' | 'ADMIN';
     updatedAt: CodecTypes['pg/timestamptz-string@1']['output'];
     addresses: public_Address[];
@@ -1524,6 +1539,16 @@ type ContractBase = Omit<
                   readonly nullable: false;
                   readonly many: false;
                 };
+                readonly lowStockThreshold: {
+                  readonly dataType: 'pg/int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/int4@1', 5>;
+                  };
+                  readonly many: false;
+                };
                 readonly price: {
                   readonly dataType: 'pg/numeric';
                   readonly codecId: 'pg/numeric@1';
@@ -1542,13 +1567,23 @@ type ContractBase = Omit<
                   readonly nullable: false;
                   readonly many: false;
                 };
+                readonly stockQuantity: {
+                  readonly dataType: 'pg/int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/int4@1', 0>;
+                  };
+                  readonly many: false;
+                };
                 readonly stockStatus: {
                   readonly dataType: 'pg/text';
                   readonly codecId: 'pg/text@1';
                   readonly nullable: false;
                   readonly default: {
                     readonly kind: 'literal';
-                    readonly value: DefaultLiteralValue<'pg/text@1', 'AVAILABLE'>;
+                    readonly value: DefaultLiteralValue<'pg/text@1', 'OUT_OF_STOCK'>;
                   };
                   readonly many: false;
                 };
@@ -1621,6 +1656,12 @@ type ContractBase = Omit<
                   readonly many: false;
                 };
                 readonly name: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                  readonly many: false;
+                };
+                readonly passwordHash: {
                   readonly dataType: 'pg/text';
                   readonly codecId: 'pg/text@1';
                   readonly nullable: true;
@@ -2351,6 +2392,10 @@ type ContractBase = Omit<
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
               };
+              readonly lowStockThreshold: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
               readonly price: {
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/numeric@1' };
@@ -2362,6 +2407,10 @@ type ContractBase = Omit<
               readonly sku: {
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly stockQuantity: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
               };
               readonly stockStatus: {
                 readonly nullable: false;
@@ -2426,9 +2475,11 @@ type ContractBase = Omit<
                 readonly active: { readonly column: 'active' };
                 readonly createdAt: { readonly column: 'createdAt' };
                 readonly id: { readonly column: 'id' };
+                readonly lowStockThreshold: { readonly column: 'lowStockThreshold' };
                 readonly price: { readonly column: 'price' };
                 readonly productId: { readonly column: 'productId' };
                 readonly sku: { readonly column: 'sku' };
+                readonly stockQuantity: { readonly column: 'stockQuantity' };
                 readonly stockStatus: { readonly column: 'stockStatus' };
                 readonly unit: { readonly column: 'unit' };
                 readonly updatedAt: { readonly column: 'updatedAt' };
@@ -2454,6 +2505,10 @@ type ContractBase = Omit<
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
               };
               readonly name: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly passwordHash: {
                 readonly nullable: true;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
               };
@@ -2510,6 +2565,7 @@ type ContractBase = Omit<
                 readonly email: { readonly column: 'email' };
                 readonly id: { readonly column: 'id' };
                 readonly name: { readonly column: 'name' };
+                readonly passwordHash: { readonly column: 'passwordHash' };
                 readonly role: { readonly column: 'role' };
                 readonly updatedAt: { readonly column: 'updatedAt' };
               };

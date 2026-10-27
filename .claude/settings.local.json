@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx tsc --noEmit)",
+      "Bash(echo \"EXIT_CODE=$?\")",
+      "Bash(git add migrations/)",
+      "Bash(git commit -m \"chore: commit Prisma migration baseline\")",
+      "Bash(npm run lint)",
+      "Bash(npm run build)",
+      "Bash(echo \"EXIT=$?\")",
+      "Bash(echo \"TSC_EXIT=$?\")",
+      "Bash(npx tsx -eval \"import { db } from ''./src/lib/db''; const products = await db.orm.public.Product.select\\(''id'', ''name'', ''slug'', ''description'', ''active''\\).all\\(\\); console.log\\(''Products:'', JSON.stringify\\(products, null, 2\\)\\);\")",
+      "Bash(npx tsx -eval \"import { db } from ''./src/lib/db''; const categories = await db.orm.public.Category.select\\(''id'', ''name'', ''slug''\\).all\\(\\); console.log\\(''Categories:'', JSON.stringify\\(categories, null, 2\\)\\);\")",
+      "Bash(ls node_modules/@prisma/orm-postgres/*.d.ts)",
+      "Bash(ls node_modules/@prisma/orm-postgres/dist/*.d.mts)",
+      "Bash(ls node_modules/@prisma/orm-postgres/dist/relational-core*)",
+      "Bash(ls node_modules/@prisma/orm-postgres/*.mjs)",
+      "Bash(ls -la node_modules/@prisma/orm-postgres/runtime*)",
+      "Bash(git -C C:/Users/sorne/Desktop/nalam_web log --oneline -10)",
+      "Bash(git -C C:/Users/sorne/Desktop/nalam_web status)"
+    ]
+  }
+}

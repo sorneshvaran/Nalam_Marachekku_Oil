@@ -40,6 +40,7 @@ model User {
   id        Uuid     @id @default(uuid())
   name      String?
   email     String   @unique
+  passwordHash String?
   role      Role     @default(CUSTOMER)
   createdAt TimestamptzString @default(now())
   updatedAt temporal.updatedAtString()
@@ -81,7 +82,9 @@ model ProductVariant {
   value       Decimal
   unit        VariantUnit
   price       Decimal
-  stockStatus StockStatus @default(AVAILABLE)
+  stockQuantity      Int         @default(0)
+  lowStockThreshold  Int         @default(5)
+  stockStatus        StockStatus @default(OUT_OF_STOCK)
   active      Boolean     @default(true)
   createdAt   TimestamptzString @default(now())
   updatedAt   temporal.updatedAtString()
@@ -91,6 +94,8 @@ model ProductVariant {
   orderItems OrderItem[]
 
   @@unique([productId, value, unit])
+  @@check(expression: sql`"stockQuantity" >= 0`, name: "product_variant_stock_quantity_nonnegative")
+  @@check(expression: sql`"lowStockThreshold" >= 0`, name: "product_variant_low_stock_threshold_nonnegative")
 }
 
 model ProductImage {

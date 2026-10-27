@@ -1,26 +1,59 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-background: #fffaf3;
+  --color-foreground: #2f2a26;
+  --color-cream-50: #fffaf3;
+  --color-cream-100: #fbf1df;
+  --color-cream-200: #f6e3c0;
+  --color-cream-300: #ebd19f;
+  --color-cream-400: #d9b878;
+  --color-cream-500: #c29a53;
+  --color-cream-600: #9c7a39;
+  --color-cream-700: #7a5d2d;
+  --color-cream-800: #5c4623;
+  --color-cream-900: #3a2f1d;
+  --color-earth-50: #fbf6ee;
+  --color-earth-100: #f3ead6;
+  --color-earth-200: #e6d3b0;
+  --color-earth-300: #d4b885;
+  --color-earth-400: #b8975a;
+  --color-earth-500: #9c7a39;
+  --color-earth-600: #7a5d2d;
+  --color-earth-700: #5c4623;
+  --color-earth-800: #3a2f1d;
+  --color-earth-900: #2f2a26;
+  --color-botanical-50: #f2f7f3;
+  --color-botanical-100: #d9e8dc;
+  --color-botanical-200: #b3cfb9;
+  --color-botanical-300: #84a983;
+  --color-botanical-400: #557f5e;
+  --color-botanical-500: #34573a;
+  --color-botanical-600: #2a4630;
+  --color-botanical-700: #223728;
+  --color-botanical-800: #1c2c20;
+  --color-botanical-900: #16221a;
+  --color-accent-50: #fbf4f0;
+  --color-accent-100: #f7e3d2;
+  --color-accent-200: #eccdb8;
+  --color-accent-300: #e2b28f;
+  --color-accent-400: #d27a4f;
+  --color-accent-500: #b85a2f;
+  --color-accent-600: #944824;
+  --color-accent-700: #75381c;
+  --color-accent-800: #5c2c15;
+  --color-accent-900: #4a2210;
+  --color-foreground-muted: #5c534b;
+  --color-foreground-soft: #7a7166;
+  --color-border-soft: #e6dcbf;
+  --color-border-strong: #c9b794;
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --container-8xl: 96rem;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-cream-50);
+  color: var(--color-foreground);
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
 }
